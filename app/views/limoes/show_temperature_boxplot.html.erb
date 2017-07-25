@@ -1,0 +1,141 @@
+<%= render "show_aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨温度报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">温度报表</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">立磨温度箱线值</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</section>
+
+
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+ <script src="/superui/content/echarts.js" charset="utf-8"></script>
+
+   <script>
+   $(function () {
+
+     var boxplot_list = <%=raw @boxplot_list %>;
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+
+
+option = {
+    title: [
+        {
+            text: '立磨北进口温度七天箱线图',
+            left: 'center',
+        },
+        {
+            text: 'upper: Q3 + 1.5 * IRQ \nlower: Q1 - 1.5 * IRQ',
+            borderColor: '#999',
+            borderWidth: 1,
+            textStyle: {
+                fontSize: 14
+            },
+            left: '10%',
+            top: '90%'
+        }
+    ],
+    tooltip: {
+        trigger: 'item',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    grid: {
+        left: '10%',
+        right: '10%',
+        bottom: '15%'
+    },
+    xAxis: {
+        type: 'category',
+        data: boxplot_list,
+        boundaryGap: true,
+        nameGap: 30,
+        splitArea: {
+            show: false
+        },
+        axisLabel: {
+            formatter: 'expr {value}'
+        },
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',
+        name: '温度',
+        splitArea: {
+            show: true
+        }
+    },
+    series: [
+        {
+            name: 'boxplot',
+            type: 'boxplot',
+            data: boxplot_list,
+            tooltip: {
+                formatter: function (param) {
+                    return [
+                        'upper: ' + param.data[4],
+                        'Q3: ' + param.data[3],
+                        'median: ' + param.data[2],
+                        'Q1: ' + param.data[1],
+                        'lower: ' + param.data[0]
+                    ].join('<br/>')
+                }
+            }
+        },
+        {
+            name: 'outlier',
+            type: 'scatter',
+            data: []
+        }
+    ]
+};
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
+

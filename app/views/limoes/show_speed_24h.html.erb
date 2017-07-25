@@ -1,0 +1,169 @@
+<%= render "show_aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨压力报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">转速报表</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+    <div class="callout callout-info">
+        <h4>说明</h4>
+
+        <p>压力报表用于展现立磨设备的七日内关键部件的转速变化，最大值，平均值走势，分布情况等。
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">立磨转速最大值&最小值</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</section>
+
+
+</div>
+<script src="/superui/content/echarts.js" charset="utf-8"></script>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+
+
+   <script>
+   $(function () {
+
+        var hourlist = <%=raw @hourlist %>;
+        var l03_list_max = <%=raw @l03_list_max %>;
+        var l03_list_avg = <%=raw @l03_list_avg %>;
+
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+
+
+// option
+option = {
+    backgroundColor: '#0f375f',
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['最大值', '平均值'],
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    xAxis: {
+        data: hourlist,
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    yAxis: {
+        splitLine: {show: false},
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    series: [{
+        name: '最大值',
+        type: 'line',
+        smooth: true,
+        showAllSymbol: true,
+        symbol: 'emptyCircle',
+        symbolSize: 15,
+        data: l03_list_max
+    }, {
+        name: '平均值',
+        type: 'bar',
+        barWidth: 10,
+        itemStyle: {
+            normal: {
+                barBorderRadius: 5,
+                color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        {offset: 0, color: '#14c8d4'},
+                        {offset: 1, color: '#43eec6'}
+                    ]
+                )
+            }
+        },
+        data: l03_list_avg
+    }, {
+        name: '最大值',
+        type: 'bar',
+        barGap: '-100%',
+        barWidth: 10,
+        itemStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        {offset: 0, color: 'rgba(20,200,212,0.5)'},
+                        {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
+                        {offset: 1, color: 'rgba(20,200,212,0)'}
+                    ]
+                )
+            }
+        },
+        z: -12,
+        data: l03_list_max
+    }, {
+        name: '最大值',
+        type: 'pictorialBar',
+        symbol: 'rect',
+        itemStyle: {
+            normal: {
+                color: '#0f375f'
+            }
+        },
+        symbolRepeat: true,
+        symbolSize: [12, 4],
+        symbolMargin: 1,
+        z: -10,
+        data: l03_list_max
+    }]
+};
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
+

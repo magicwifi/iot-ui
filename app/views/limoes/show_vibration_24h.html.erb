@@ -1,0 +1,131 @@
+<%= render "show_aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨振动报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">振动报表</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">立磨振动当日内最大值&最小值</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 800px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</section>
+
+
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+ <script src="/superui/content/plugins/echarts.min.js" charset="utf-8"></script>
+
+   <script>
+   $(function () {
+
+        var hourlist = <%=raw @hourlist %>;
+        var l91_list_max = <%=raw @l91_list_max %>;
+        var l91_list_min = <%=raw @l91_list_min %>;
+        var l77_list_max = <%=raw @l77_list_max %>;
+        var l77_list_min = <%=raw @l77_list_min %>;
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+option = {
+    backgroundColor: '#0E2A43',
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['立磨振动(max)', '立磨振动(min)', '减速器垂直振动(max)','减速器垂直振动(min)'],
+        textStyle: {
+            color: '#fff'
+        },
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: hourlist,
+        axisLine: {
+            lineStyle: {
+                color: '#fff'
+            }
+        }
+
+    },
+    yAxis: {
+        axisLine: {
+            lineStyle: {
+                color: '#fff'
+            }
+        }
+
+    },
+    series: [{
+        name: '立磨振动(max)',
+        type: 'line',
+        data: l91_list_max
+    }, {
+        name: '立磨振动(min)',
+        type: 'line',
+        data: l91_list_min
+    }, {
+        name: '减速器垂直振动(max)',
+        type: 'line',
+        data: l77_list_max
+    },
+    {
+        name: '减速器垂直振动(min)',
+        type: 'line',
+        data: l77_list_min
+    }
+    ]
+};
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
+

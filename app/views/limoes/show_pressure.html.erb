@@ -1,0 +1,201 @@
+<%= render "show_aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨压力报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">压力报表</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+    <div class="callout callout-info">
+        <h4>说明</h4>
+
+        <p>压力报表用于展现立磨设备的七日内关键部件的压力变化，最大值，平均值走势，分布情况等。
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">立磨压力最大值&最小值</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</section>
+
+
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+ <script src="/superui/content/plugins/echarts.min.js" charset="utf-8"></script>
+
+   <script>
+   $(function () {
+
+        var datelist = <%=raw @datelist %>;
+        var l65_list_max = <%=raw @l65_list_max %>;
+        var l65_list_min = <%=raw @l65_list_min %>;
+        var l10_list_max = <%=raw @l10_list_max %>;
+        var l10_list_min = <%=raw @l10_list_min %>;
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+option= {
+                    backgroundColor:'#091323',
+                    color: ['#38b4ee', '#303f9f', '#4caf50'],
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        x: 'left',
+                        padding: [10, 20,0,20],
+                        data:[{name:'除尘器出口压力(max)',icon:'circle'},
+                              {name:'除尘器出口压力(min)',icon:'circle'},
+                              {name:'立磨出口压力(max)',icon:'circle'},
+                              {name:'立磨出口压力(min)',icon:'circle'}
+                              ],
+                        selected: {
+                            '除尘器出口压力(max)': true,
+                            '除尘器出口压力(min)': true,
+                            '立磨出口压力(max)': true,
+                            '立磨出口压力(min)': true,
+                        },
+                        textStyle:{
+                            color:'#dededf'
+                        }
+                    },
+                    grid: {
+                        left: '0',
+                        right: '3%',
+                        bottom: '3%',
+                        top:'13%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisTick:{show:false},
+                        axisLabel:{
+                            textStyle:{
+                                color:'#dededf'
+                            }
+                        },
+                        splitLine:{//网格线
+                            show: true,
+                            lineStyle:{
+                                color:['#23303f'],
+                                type:'solid'
+                            }
+                        },
+                        data: datelist
+                    },
+                    yAxis: {
+                        min:-7000,
+                        max:0,
+                        interval:500,
+                        axisTick:{show:false},
+                        axisLine:{
+                            show:false,
+                        //    onZero:false
+                        },
+                        axisLabel:{
+                            textStyle:{
+                                color:'#dededf'
+                            }
+                        },
+                        splitLine:{//网格线
+                            show: true,
+                            lineStyle:{
+                                color:['#23303f'],
+                                type:'solid'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name:'除尘器出口压力(max)',
+                            type:'line',
+                            smooth:true,
+                            symbolSize:12,
+                            data:l65_list_max,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'top'//值显示
+                                }
+                            }
+                        },
+                        {
+                            name:'除尘器出口压力(min)',
+                            type:'line',
+                            smooth:true,
+                            symbolSize:12,
+                            data:l65_list_min,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'top'
+                                }
+                            }
+                        },
+                        {
+                            name:'立磨出口压力(max)',
+                            type:'line',
+                            smooth:true,
+                            symbolSize:12,
+                            data:l10_list_max,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'top'
+                                }
+                            }
+                        },
+                         {
+                            name:'立磨出口压力(min)',
+                            type:'line',
+                            smooth:true,
+                            symbolSize:12,
+                            data:l10_list_min,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    ]
+                };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
+

@@ -1,0 +1,152 @@
+<%= render "show_aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨温度报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">温度报表</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+    <div class="callout callout-info">
+        <h4>说明</h4>
+
+        <p>温度报表用于展现立磨设备的七日内关键部件的温度变化，极限值，最大值走势，分布情况等，用于找到温度的离群值。
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">立磨温度最大值&极限值</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</section>
+
+
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+ <script src="/superui/content/plugins/echarts.min.js" charset="utf-8"></script>
+
+   <script>
+   $(function () {
+
+        var datelist = <%=raw @datelist %>;
+        var l92_list_max = <%=raw @l92_list_max %>;
+        var l92_list_topvalue = <%=raw @l92_list_topvalue %>;
+        var l80_list_max = <%=raw @l80_list_max %>;
+        var l80_list_topvalue = <%=raw @l80_list_topvalue %>;
+        var l75_list_max = <%=raw @l75_list_max %>;
+        var l75_list_topvalue = <%=raw @l75_list_topvalue %>;
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+        option = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {type: 'cross'}
+    },
+    legend: {
+        data:['电机A相定子温度(MAX)','立磨北进口温度(MAX)','电机1轴承温度(MAX)','电机A相定子温度(99.99%)','立磨北进口温度(99.99%)','电机1轴承温度(99.99%)'],
+        textStyle: {
+            fontSize: 12
+        }
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: datelist
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            name: '温度值',
+            min: 0,
+            max: 400,
+            interval: 50,
+            axisLabel: {
+                formatter: '{value} '
+            }
+        }
+    ],
+   series: [{
+        name: '电机A相定子温度(MAX)',
+        stack: 'stack1',
+        type: 'bar',
+        data: l92_list_max,
+        barWidth: 16,
+        barGap: 0
+      }, {
+        name: '立磨北进口温度(MAX)',
+        stack: 'stack2',
+        type: 'bar',
+        data: l80_list_max,
+        barWidth: 16,
+        barGap: 0
+      }, {
+        name: '电机1轴承温度(MAX)',
+        stack: 'stack3',
+        type: 'bar',
+        data: l75_list_max,
+        barWidth: 16,
+        barGap: 0
+      },{
+        name: '电机A相定子温度(99.99%)',
+        stack: 'stack4',
+        type: 'line',
+        data: l92_list_topvalue,
+        barWidth: 16,
+        barGap: 0
+      }, {
+        name: '立磨北进口温度(99.99%)',
+        stack: 'stack5',
+        type: 'line',
+        data: l80_list_topvalue,
+        barWidth: 16,
+        barGap: 0
+      }, {
+        name: '电机1轴承温度(99.99%)',
+        stack: 'stack6',
+        type: 'line',
+        data: l75_list_topvalue,
+        barWidth: 16,
+        barGap: 0
+      }
+      ]
+};
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
+

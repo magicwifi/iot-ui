@@ -1,0 +1,75 @@
+﻿
+        <link href="/superui/content/plugins/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+<%= render "aside"  %>
+<!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+
+
+    <section class="content-header">
+        <h1>
+             管理表格
+            <small>bootstrap-table管理表格</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Simple</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                <div class="col-md-12">
+                    <!-- BEGIN SAMPLE TABLE PORTLET-->
+                    <div class="box-body" style="padding-bottom:0px;">
+
+                        <div class="table-scrollable">
+                            <table class="table-striped table-hover" id="table"
+                                   data-toggle="table"
+                                   data-pagination="true"
+                                   data-side-pagination="server"
+                                   data-search="true"
+                                   data-advanced-search="true"
+                                 data-toolbar="#toolbar" data-row-style="rowStyle">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-sortable="true">Id</th>
+                                        <th data-field="lastname" data-sortable="true">设备编号</th>
+                                        <th data-field="state" data-sortable="true" >设备类型</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+    <% @devices.each_with_index do |device,index| %>
+ <tr class="active">
+ <td style=""><%= (index+1) %></td>
+ <td style=""><%= link_to device['deviceid'], limoes_show_mains_path(device['deviceid'],@findday) %></td>
+ <td style=""> <span class="label label-sm label-success"> <%= t(device['type']) %> </span>
+ </td>
+ </tr>
+<% end %>
+
+
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END SAMPLE TABLE PORTLET-->
+
+                </div>
+
+
+        </div>
+
+    </section>
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+    <script src="/superui/content/ui/global/bootstrap/js/bootstrap.min.js"></script>
+<script src="/superui/content/plugins/bootstrap-table/bootstrap-table.js"></script>
+<script src="/superui/content/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+</body>

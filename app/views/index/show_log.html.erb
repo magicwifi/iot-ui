@@ -1,0 +1,243 @@
+<%= render "aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨温度报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">设备上报数据统计</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">上报数据统计分布 </h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</section>
+
+
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+ <script src="/superui/content/echarts.js" charset="utf-8"></script>
+
+   <script>
+   $(function () {
+
+
+     var count_array = <%=raw @count_arr %>;
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+function getVirtulData(year) {
+    year = year || '2017';
+    var date = +echarts.number.parseDate(year + '-01-01');
+    var end = +echarts.number.parseDate((+year + 1) + '-01-01');
+    var dayTime = 3600 * 24 * 1000;
+    var data = [];
+    for (var time = date; time < end; time += dayTime) {
+        data.push([
+            echarts.format.formatTime('yyyy-MM-dd', time),
+            Math.floor(Math.random() * 10000)
+        ]);
+    }
+    return data;
+}
+
+var data = getVirtulData(2017)
+
+console.log(data)
+console.log(count_array)
+
+
+option = {
+    backgroundColor: '#404a59',
+
+    title: {
+        top: 30,
+        text: '2017年每天数据量',
+        left: 'center',
+        textStyle: {
+            color: '#fff'
+        }
+    },
+    tooltip : {
+        trigger: 'item'
+    },
+    legend: {
+        top: '30',
+        left: '100',
+        data:['数据量', 'Top 5'],
+        textStyle: {
+            color: '#fff'
+        }
+    },
+    calendar: [{
+        top: 100,
+        left: 'center',
+        range: ['2017-01-01', '2017-06-30'],
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: '#000',
+                width: 4,
+                type: 'solid'
+            }
+        },
+        yearLabel: {
+            formatter: '{start}  1st',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        itemStyle: {
+            normal: {
+                color: '#323c48',
+                borderWidth: 1,
+                borderColor: '#111'
+            }
+        }
+    }, {
+        top: 340,
+        left: 'center',
+        range: ['2017-07-01', '2017-12-31'],
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: '#000',
+                width: 4,
+                type: 'solid'
+            }
+        },
+        yearLabel: {
+            formatter: '{start}  2nd',
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        itemStyle: {
+            normal: {
+                color: '#323c48',
+                borderWidth: 1,
+                borderColor: '#111'
+            }
+        }
+    }],
+    series : [
+        {
+            name: '数据量',
+            type: 'scatter',
+            coordinateSystem: 'calendar',
+            data: count_array,
+            symbolSize: function (val) {
+                return val[1] / 500000;
+            },
+            itemStyle: {
+                normal: {
+                    color: '#ddb926'
+                }
+            }
+        },
+        {
+            name: '数据量',
+            type: 'scatter',
+            coordinateSystem: 'calendar',
+            calendarIndex: 1,
+            data: count_array,
+            symbolSize: function (val) {
+                return val[1] / 500000;
+            },
+            itemStyle: {
+                normal: {
+                    color: '#ddb926'
+                }
+            }
+        },
+        {
+            name: 'Top 5',
+            type: 'effectScatter',
+            coordinateSystem: 'calendar',
+            calendarIndex: 1,
+            data: count_array.sort(function (a, b) {
+                return b[1] - a[1];
+            }).slice(0, 5),
+            symbolSize: function (val) {
+                return val[1] / 500000;
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            itemStyle: {
+                normal: {
+                    color: '#f4e925',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        },
+        {
+            name: 'Top 5',
+            type: 'effectScatter',
+            coordinateSystem: 'calendar',
+            data: count_array.sort(function (a, b) {
+                return b[1] - a[1];
+            }).slice(0, 5),
+            symbolSize: function (val) {
+                return val[1] / 500000;
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            itemStyle: {
+                normal: {
+                    color: '#f4e925',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        }
+    ]
+};
+
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
+

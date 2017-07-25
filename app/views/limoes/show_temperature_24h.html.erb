@@ -1,0 +1,363 @@
+<%= render "show_aside"  %>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+ <section class="content-header">
+        <h1>
+             立磨温度报表
+            <small>echarts sample</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Charts</a></li>
+            <li class="active">温度报表</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">电机A相定子温度当天走势</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+
+       <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">立磨北进口温度当天走势</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main1" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+          <div class="row">
+        <div class="col-md-12">
+
+            <!-- AREA CHART -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">电机1轴承温度当天走势</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <div id="main2" style="width: 100%; height: 600px;"></div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+
+    </div>
+</section>
+
+
+</div>
+    <script src="/superui/content/ui/global/jQuery/jquery.min.js"></script>
+ <script src="/superui/content/plugins/echarts.min.js" charset="utf-8"></script>
+
+   <script>
+
+           var hourlist = <%=raw @hourlist %>;
+        var l92_list_max = <%=raw @l92_list_max %>;
+        var l92_list_avg = <%=raw @l92_list_avg %>;
+        var l80_list_max = <%=raw @l80_list_max %>;
+        var l80_list_avg = <%=raw @l80_list_avg %>;
+        var l75_list_max = <%=raw @l75_list_max %>;
+        var l75_list_avg = <%=raw @l75_list_avg %>;
+
+
+   $(function () {
+
+
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+            option = {
+    title: {
+        //text: '2000-2016年中国汽车销量及增长率'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            dataView: {
+                show: true,
+                readOnly: false
+            },
+            restore: {
+                show: true
+            },
+            saveAsImage: {
+                show: true
+            }
+        }
+    },
+    grid: {
+        containLabel: true
+    },
+    legend: {
+        data: ['最大值','平均值']
+    },
+    xAxis: [{
+        type: 'category',
+        axisTick: {
+            alignWithLabel: true
+        },
+        data: hourlist
+    }],
+    yAxis: [ {
+        type: 'value',
+        name: '温度',
+        min: 0,
+        max: 100,
+        position: 'left'
+    }],
+    series: [{
+        name: '最大值',
+        type: 'line',
+        stack: '最大值',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top',
+                }
+            },
+        lineStyle: {
+                normal: {
+                    width: 3,
+                    shadowColor: 'rgba(0,0,0,0.4)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 10
+                }
+            },
+        data: l92_list_max
+    }, {
+        name: '平均值',
+        type: 'bar',
+        stack: '平均值',
+
+        data: l92_list_avg
+    }]
+};
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+   $(function () {
+
+
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main1'));
+
+            option = {
+    title: {
+        //text: '2000-2016年中国汽车销量及增长率'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            dataView: {
+                show: true,
+                readOnly: false
+            },
+            restore: {
+                show: true
+            },
+            saveAsImage: {
+                show: true
+            }
+        }
+    },
+    grid: {
+        containLabel: true
+    },
+    legend: {
+        data: ['最大值','平均值']
+    },
+    xAxis: [{
+        type: 'category',
+        axisTick: {
+            alignWithLabel: true
+        },
+        data: hourlist
+    }],
+    yAxis: [ {
+        type: 'value',
+        name: '温度',
+        min: 0,
+        max: 400,
+        position: 'left'
+    }],
+    series: [{
+        name: '最大值',
+        type: 'line',
+        stack: '最大值',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top',
+                }
+            },
+        lineStyle: {
+                normal: {
+                    width: 3,
+                    shadowColor: 'rgba(0,0,0,0.4)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 10
+                }
+            },
+        data: l80_list_max
+    }, {
+        name: '平均值',
+        type: 'bar',
+        stack: '平均值',
+
+        data: l80_list_avg
+    }]
+};
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    $(function () {
+
+
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main2'));
+
+            option = {
+    title: {
+        //text: '2000-2016年中国汽车销量及增长率'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            dataView: {
+                show: true,
+                readOnly: false
+            },
+            restore: {
+                show: true
+            },
+            saveAsImage: {
+                show: true
+            }
+        }
+    },
+    grid: {
+        containLabel: true
+    },
+    legend: {
+        data: ['最大值','平均值']
+    },
+    xAxis: [{
+        type: 'category',
+        axisTick: {
+            alignWithLabel: true
+        },
+        data: hourlist
+    }],
+    yAxis: [ {
+        type: 'value',
+        name: '温度',
+        min: 0,
+        max: 100,
+        position: 'left'
+    }],
+    series: [{
+        name: '最大值',
+        type: 'line',
+        stack: '最大值',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top',
+                }
+            },
+        lineStyle: {
+                normal: {
+                    width: 3,
+                    shadowColor: 'rgba(0,0,0,0.4)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 10
+                }
+            },
+        data: l75_list_max
+    }, {
+        name: '平均值',
+        type: 'bar',
+        stack: '平均值',
+
+        data: l75_list_avg
+    }]
+};
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+
+    </script>
