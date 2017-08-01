@@ -3,13 +3,13 @@
 <div class="content-wrapper">
  <section class="content-header">
         <h1>
-             立磨压力报表
+             立磨<%= t(@sensor_str) %>报表
             <small>echarts sample</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Charts</a></li>
-            <li class="active">转速报表</li>
+            <li class="active"><%= t(@sensor_str) %>报表</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -17,7 +17,7 @@
     <div class="callout callout-info">
         <h4>说明</h4>
 
-        <p>压力报表用于展现立磨设备的七日内关键部件的转速变化，最大值，平均值走势，分布情况等。
+        <p><%= t(@sensor_str) %>报表用于展现立磨设备的七日内关键部件的转速变化，最大值，平均值走势，分布情况等。
         </p>
     </div>
     <div class="row">
@@ -26,7 +26,7 @@
             <!-- AREA CHART -->
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">立磨转速最大值&最小值</h3>
+                    <h3 class="box-title"><%=t @sensor_str %>最大值&最小值</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>

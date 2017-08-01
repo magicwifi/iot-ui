@@ -444,7 +444,10 @@ l10_list.each { |x|
   def show_speed
     deviceid = params[:deviceid]
     date = params[:date]
-testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData//last7MaxMin", {"date"=>date,"deviceid"=>deviceid,"sensor"=>"L0003"}.to_json, {content_type: :json, accept: :json}
+    sensor = params[:sensor]
+    @sensor_str = sensor
+
+testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData//last7MaxMin", {"date"=>date,"deviceid"=>deviceid,"sensor"=>sensor}.to_json, {content_type: :json, accept: :json}
 testjson = JSON.parse(testbody)
 
 @datelist = []
@@ -465,7 +468,7 @@ l03_list.each { |x|
 }
 
 
-testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData/last7TopValue", {"date"=>date,"deviceid"=>deviceid,"sensor"=>"L0003"}.to_json, {content_type: :json, accept: :json}
+testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData/last7TopValue", {"date"=>date,"deviceid"=>deviceid,"sensor"=>sensor}.to_json, {content_type: :json, accept: :json}
 testjson = JSON.parse(testbody)
 
 
@@ -483,8 +486,9 @@ l03_list.each { |x|
 
     deviceid = params[:deviceid]
 date = params[:date]
-
-    testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData/getSensorHour", {"date"=>date,"deviceid"=>deviceid,"sensor"=>"L0003"}.to_json, {content_type: :json, accept: :json}
+ sensor = params[:sensor]
+@sensor_str = sensor
+    testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData/getSensorHour", {"date"=>date,"deviceid"=>deviceid,"sensor"=>sensor}.to_json, {content_type: :json, accept: :json}
 testjson = JSON.parse(testbody)
 
 
@@ -508,6 +512,7 @@ l03_list.each { |x|
   def show_vibration
     deviceid = params[:deviceid]
     date = params[:date]
+
 
 testbody = RestClient.post "http://10.76.2.63:8080/gcis/getResData//last7MaxMin", {"date"=>date,"deviceid"=>deviceid,"sensor"=>"L0091"}.to_json, {content_type: :json, accept: :json}
 testjson = JSON.parse(testbody)
